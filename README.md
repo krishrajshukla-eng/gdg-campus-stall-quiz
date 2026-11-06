@@ -38,4 +38,4 @@ If the projector stops working, I can introduce the club without slides, invite 
 - No dependencies or API keys are required.
 - The quiz is a demonstration, not a formal assessment.
 - The sign-up flow needs a real, organizer-approved form before it can collect responses.
-- GitHub Actions deploys the site to GitHub Pages whenever changes are pushed to `main`.
+- GitHub Pages publishes the site from the `gh-pages` branch.
