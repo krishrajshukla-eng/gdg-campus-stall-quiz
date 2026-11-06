@@ -1,0 +1,636 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f6f8fc">
+    <meta
+      name="description"
+      content="A quick, beginner-friendly tech quiz and a simple way to discover the GDG campus community."
+    >
+    <title>GDG Campus — One-Minute Tech Quiz</title>
+    <style>
+      :root {
+        color-scheme: light;
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        color: #202124;
+        background: #f6f8fc;
+        font-synthesis: none;
+        text-rendering: optimizeLegibility;
+        --blue: #4285f4;
+        --green: #34a853;
+        --yellow: #fbbc04;
+        --red: #ea4335;
+        --muted: #5f6368;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        min-width: 320px;
+        margin: 0;
+        background:
+          radial-gradient(ellipse at 82% 4%, rgb(66 133 244 / 10%), transparent 29rem),
+          #f6f8fc;
+      }
+
+      a {
+        color: inherit;
+      }
+
+      button {
+        font: inherit;
+      }
+
+      [hidden] {
+        display: none !important;
+      }
+
+      .page-shell {
+        width: min(1080px, calc(100% - 40px));
+        margin: 0 auto;
+      }
+
+      .site-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        padding: 24px 0;
+      }
+
+      .brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        color: #202124;
+        font-size: 0.96rem;
+        font-weight: 750;
+        text-decoration: none;
+      }
+
+      .brand-mark {
+        display: inline-flex;
+        gap: 3px;
+      }
+
+      .brand-mark span {
+        width: 9px;
+        height: 22px;
+        border-radius: 6px;
+      }
+
+      .brand-mark span:nth-child(1) { background: var(--blue); }
+      .brand-mark span:nth-child(2) { background: var(--red); }
+      .brand-mark span:nth-child(3) { background: var(--yellow); }
+      .brand-mark span:nth-child(4) { background: var(--green); }
+
+      nav {
+        display: flex;
+        gap: 25px;
+        color: var(--muted);
+        font-size: 0.9rem;
+      }
+
+      nav a {
+        text-decoration: none;
+      }
+
+      nav a:hover,
+      nav a:focus-visible {
+        color: var(--blue);
+      }
+
+      .hero {
+        display: grid;
+        grid-template-columns: minmax(0, 1.15fr) minmax(250px, 0.85fr);
+        align-items: center;
+        gap: 50px;
+        padding: 68px 0 74px;
+      }
+
+      .eyebrow {
+        margin: 0 0 14px;
+        color: #1967d2;
+        font-size: 0.77rem;
+        font-weight: 800;
+        letter-spacing: 0.13em;
+        text-transform: uppercase;
+      }
+
+      h1,
+      h2,
+      h3,
+      p {
+        margin-top: 0;
+      }
+
+      h1 {
+        max-width: 650px;
+        margin-bottom: 20px;
+        font-size: clamp(2.6rem, 7vw, 5rem);
+        letter-spacing: -0.07em;
+        line-height: 0.99;
+      }
+
+      h1 span {
+        color: var(--blue);
+      }
+
+      .hero-copy {
+        max-width: 550px;
+        margin-bottom: 27px;
+        color: var(--muted);
+        font-size: 1.08rem;
+        line-height: 1.7;
+      }
+
+      .button {
+        display: inline-flex;
+        min-height: 48px;
+        align-items: center;
+        justify-content: center;
+        padding: 0 22px;
+        border: 0;
+        border-radius: 9px;
+        background: var(--blue);
+        box-shadow: 0 5px 14px rgb(66 133 244 / 22%);
+        color: white;
+        cursor: pointer;
+        font-weight: 750;
+        text-decoration: none;
+        transition: transform 160ms ease, box-shadow 160ms ease;
+      }
+
+      .button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 18px rgb(66 133 244 / 28%);
+      }
+
+      .hero-art {
+        position: relative;
+        display: grid;
+        min-height: 300px;
+        place-items: center;
+        overflow: hidden;
+        border: 1px solid #e4e9f2;
+        border-radius: 28px;
+        background:
+          radial-gradient(circle at 50% 45%, white 0 20%, transparent 21%),
+          linear-gradient(145deg, #e8f0fe, #fff 64%);
+      }
+
+      .orbit {
+        position: absolute;
+        width: 225px;
+        height: 225px;
+        border: 1px solid rgb(66 133 244 / 24%);
+        border-radius: 50%;
+      }
+
+      .orbit::before,
+      .orbit::after {
+        position: absolute;
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        content: "";
+      }
+
+      .orbit::before {
+        top: 13px;
+        left: 36px;
+        background: var(--red);
+      }
+
+      .orbit::after {
+        right: 3px;
+        bottom: 60px;
+        background: var(--green);
+      }
+
+      .quiz-bubble {
+        position: relative;
+        display: grid;
+        width: 144px;
+        height: 144px;
+        place-items: center;
+        border-radius: 42px;
+        background: white;
+        box-shadow: 0 18px 55px rgb(60 64 67 / 17%);
+        color: var(--blue);
+        font-size: 4.2rem;
+        font-weight: 850;
+        transform: rotate(-7deg);
+      }
+
+      .quiz-bubble::after {
+        position: absolute;
+        right: 4px;
+        bottom: -7px;
+        width: 27px;
+        height: 27px;
+        border-radius: 50%;
+        background: var(--yellow);
+        content: "";
+      }
+
+      .section {
+        padding: 62px 0;
+        border-top: 1px solid #e3e7ef;
+      }
+
+      .section-heading {
+        max-width: 640px;
+        margin-bottom: 30px;
+      }
+
+      h2 {
+        margin-bottom: 10px;
+        font-size: clamp(1.8rem, 4vw, 2.5rem);
+        letter-spacing: -0.045em;
+      }
+
+      .section-heading p,
+      .card p,
+      .answer-card p {
+        color: var(--muted);
+        line-height: 1.7;
+      }
+
+      .quiz-card,
+      .card,
+      .answer-card {
+        border: 1px solid #e1e6ef;
+        border-radius: 17px;
+        background: white;
+        box-shadow: 0 8px 26px rgb(60 64 67 / 5%);
+      }
+
+      .quiz-card {
+        max-width: 760px;
+        padding: clamp(20px, 5vw, 38px);
+      }
+
+      .question {
+        padding: 0;
+        border: 0;
+      }
+
+      .question + .question {
+        margin-top: 30px;
+      }
+
+      .question legend {
+        margin-bottom: 13px;
+        font-size: 1.05rem;
+        font-weight: 750;
+      }
+
+      .options {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+      }
+
+      .option {
+        display: flex;
+        min-height: 48px;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 12px;
+        border: 1px solid #e4e8f0;
+        border-radius: 10px;
+        color: #3c4043;
+        cursor: pointer;
+      }
+
+      .option:hover {
+        border-color: var(--blue);
+        background: #f8faff;
+      }
+
+      .option input {
+        accent-color: var(--blue);
+      }
+
+      .quiz-actions {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 16px;
+        margin-top: 28px;
+      }
+
+      .quiz-actions .button:disabled {
+        box-shadow: none;
+        cursor: not-allowed;
+        opacity: 0.52;
+        transform: none;
+      }
+
+      .quiz-note,
+      .quiz-result {
+        margin: 0;
+        color: var(--muted);
+        font-size: 0.92rem;
+      }
+
+      .quiz-result {
+        min-height: 1.5em;
+        margin-top: 18px;
+        color: #1967d2;
+        font-weight: 750;
+      }
+
+      .steps {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 15px;
+      }
+
+      .card {
+        padding: 23px;
+      }
+
+      .step-number {
+        display: grid;
+        width: 38px;
+        height: 38px;
+        margin-bottom: 18px;
+        place-items: center;
+        border-radius: 12px;
+        background: #e8f0fe;
+        color: #1967d2;
+        font-weight: 800;
+      }
+
+      .card h3,
+      .answer-card h3 {
+        margin-bottom: 8px;
+        font-size: 1.08rem;
+      }
+
+      .card p,
+      .answer-card p {
+        margin-bottom: 0;
+        font-size: 0.94rem;
+      }
+
+      .answers {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 15px;
+      }
+
+      .answer-card {
+        padding: 23px;
+      }
+
+      .answer-card h3 {
+        color: #1967d2;
+      }
+
+      .answer-card.wide {
+        grid-column: 1 / -1;
+      }
+
+      .site-footer {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 25px 0 34px;
+        border-top: 1px solid #e3e7ef;
+        color: var(--muted);
+        font-size: 0.84rem;
+      }
+
+      @media (max-width: 700px) {
+        .hero {
+          grid-template-columns: 1fr;
+          gap: 35px;
+          padding: 50px 0 56px;
+        }
+
+        .hero-art {
+          min-height: 240px;
+        }
+
+        .steps {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (max-width: 520px) {
+        .page-shell {
+          width: min(100% - 30px, 1080px);
+        }
+
+        .site-header {
+          align-items: flex-start;
+        }
+
+        nav {
+          flex-wrap: wrap;
+          justify-content: flex-end;
+          gap: 10px 16px;
+          font-size: 0.82rem;
+        }
+
+        .options,
+        .answers {
+          grid-template-columns: 1fr;
+        }
+
+        .answer-card.wide {
+          grid-column: auto;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          scroll-behavior: auto !important;
+          transition-duration: 0.01ms !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="site-header">
+        <a class="brand" href="#top" aria-label="GDG Campus home">
+          <span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span><span></span></span>
+          GDG Campus
+        </a>
+        <nav aria-label="Main navigation">
+          <a href="#quiz">Play the quiz</a>
+          <a href="#join">Join the club</a>
+          <a href="#my-work">My answers</a>
+        </nav>
+      </header>
+
+      <main id="top">
+        <section class="hero" aria-labelledby="hero-title">
+          <div>
+            <p class="eyebrow">Meet. Make. Learn.</p>
+            <h1 id="hero-title">Curious about tech? <span>Try one minute.</span></h1>
+            <p class="hero-copy">
+              A tiny tech quiz to break the ice at our GDG campus stall. Play with a friend,
+              compare scores, then find a team to build with.
+            </p>
+            <a class="button" href="#quiz">Take the 1-minute quiz</a>
+          </div>
+          <div class="hero-art" aria-hidden="true">
+            <div class="orbit"></div>
+            <div class="quiz-bubble">?</div>
+          </div>
+        </section>
+
+        <section class="section" id="quiz" aria-labelledby="quiz-title">
+          <div class="section-heading">
+            <p class="eyebrow">Stall activity · 3 questions</p>
+            <h2 id="quiz-title">How tech-curious are you?</h2>
+            <p>No pressure and no special knowledge needed. Pick an answer for each question and see your score.</p>
+          </div>
+          <form class="quiz-card" id="tech-quiz">
+            <fieldset class="question">
+              <legend>1. What does HTML help you create?</legend>
+              <div class="options">
+                <label class="option"><input type="radio" name="q1" value="style" required> A page's visual style</label>
+                <label class="option"><input type="radio" name="q1" value="structure"> A page's structure</label>
+                <label class="option"><input type="radio" name="q1" value="database"> A database server</label>
+                <label class="option"><input type="radio" name="q1" value="wifi"> A Wi-Fi signal</label>
+              </div>
+            </fieldset>
+            <fieldset class="question">
+              <legend>2. Which one is a programming language?</legend>
+              <div class="options">
+                <label class="option"><input type="radio" name="q2" value="hdmi" required> HDMI</label>
+                <label class="option"><input type="radio" name="q2" value="python"> Python</label>
+                <label class="option"><input type="radio" name="q2" value="png"> PNG</label>
+                <label class="option"><input type="radio" name="q2" value="wifi"> Wi-Fi</label>
+              </div>
+            </fieldset>
+            <fieldset class="question">
+              <legend>3. What is a good first step when a bug appears?</legend>
+              <div class="options">
+                <label class="option"><input type="radio" name="q3" value="guess" required> Guess and change everything</label>
+                <label class="option"><input type="radio" name="q3" value="read"> Read the error and reproduce it</label>
+                <label class="option"><input type="radio" name="q3" value="delete"> Delete the project</label>
+                <label class="option"><input type="radio" name="q3" value="ignore"> Ignore it forever</label>
+              </div>
+            </fieldset>
+            <div class="quiz-actions">
+              <button class="button" id="check-answers" type="submit" disabled>Check my answers</button>
+              <button class="button" id="play-again" type="reset" hidden>Play again</button>
+              <p class="quiz-note">Your answers stay on this device.</p>
+            </div>
+            <p class="quiz-result" id="quiz-result" aria-live="polite"></p>
+          </form>
+        </section>
+
+        <section class="section" id="join" aria-labelledby="join-title">
+          <div class="section-heading">
+            <p class="eyebrow">Find your people</p>
+            <h2 id="join-title">One QR code. A team that fits you.</h2>
+            <p>At the stall, scan the club's Google Form QR code. It takes less than a minute and helps us follow up with the right team.</p>
+          </div>
+          <div class="steps">
+            <article class="card">
+              <span class="step-number">1</span>
+              <h3>Scan and say hello</h3>
+              <p>The QR code opens a short Google Form. A printed copy of the link is available if a phone camera or network is unavailable.</p>
+            </article>
+            <article class="card">
+              <span class="step-number">2</span>
+              <h3>Choose a team</h3>
+              <p>Pick your interests: Web, AI/ML, Design, Events, or “I’m still exploring.” No experience is required.</p>
+            </article>
+            <article class="card">
+              <span class="step-number">3</span>
+              <h3>We follow up</h3>
+              <p>With consent, collect a name and contact email. Form responses go to a restricted-access Google Sheet for the club team.</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="section" id="my-work" aria-labelledby="answers-title">
+          <div class="section-heading">
+            <p class="eyebrow">My project notes</p>
+            <h2 id="answers-title">What I made and what I learned</h2>
+            <p>A short explanation I can share when someone asks about this project.</p>
+          </div>
+          <div class="answers">
+            <article class="answer-card">
+              <h3>What did I make, and why?</h3>
+              <p>I made a one-page GDG campus stall site with a small, auto-scored tech quiz. It gives students a quick, friendly way to try something and learn how to join a team.</p>
+            </article>
+            <article class="answer-card">
+              <h3>How will I collect sign-ups?</h3>
+              <p>I’ll use a Google Form QR code with name, contact email, and preferred team. Its linked Sheet lets the organizers sort interested students by team.</p>
+            </article>
+            <article class="answer-card">
+              <h3>What will catch students’ interest?</h3>
+              <p>The one-minute quiz: students can play solo or challenge a friend, get an instant score, and talk about the answers with the team.</p>
+            </article>
+            <article class="answer-card">
+              <h3>What was difficult, and what do I want to learn?</h3>
+              <p>Keeping it simple while making it useful was difficult. In GDG, I want to learn how to build projects with a team and improve my web development skills.</p>
+            </article>
+            <article class="answer-card wide">
+              <h3>Surprise plan: the projector stops working</h3>
+              <p>I’d stay calm, tell the audience we can continue without slides, and switch to a short spoken introduction. I’d use the quiz on a phone or laptop if available, invite a show of hands, and share the QR code or a printed sign-up sheet afterward.</p>
+            </article>
+          </div>
+        </section>
+      </main>
+
+      <footer class="site-footer">
+        <span>A small student-made idea for a more welcoming tech stall.</span>
+        <span>Built as a single page · No sign-up data is stored here</span>
+      </footer>
+    </div>
+
+    <script>
+      const quiz = document.querySelector("#tech-quiz");
+      const submitButton = document.querySelector("#check-answers");
+      const resetButton = document.querySelector("#play-again");
+      const result = document.querySelector("#quiz-result");
+      const answers = { q1: "structure", q2: "python", q3: "read" };
+
+      quiz.addEventListener("change", () => {
+        submitButton.disabled = !quiz.checkValidity();
+      });
+
+      quiz.addEventListener("submit", (event) => {
+        event.preventDefault();
+        if (!quiz.reportValidity()) return;
+
+        const formData = new FormData(quiz);
+        const score = Object.entries(answers).reduce(
+          (total, [question, answer]) => total + Number(formData.get(question) === answer),
+          0,
+        );
+        result.textContent = `You got ${score} out of ${Object.keys(answers).length}! ${score === 3 ? "Brilliant — come build something with us." : "Nice try — every builder starts by getting curious."}`;
+        submitButton.hidden = true;
+        resetButton.hidden = false;
+      });
+
+      quiz.addEventListener("reset", () => {
+        submitButton.hidden = false;
+        submitButton.disabled = true;
+        resetButton.hidden = true;
+        result.textContent = "";
+      });
+    </script>
+  </body>
+</html>
