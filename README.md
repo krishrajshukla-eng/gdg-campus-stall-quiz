@@ -6,6 +6,8 @@ Visitors can try three beginner-friendly questions, see their score immediately,
 
 ## Try it
 
+**Live site:** <https://krishrajshukla-eng.github.io/gdg-campus-stall-quiz/>
+
 Open [`index.html`](./index.html) in a browser, or serve this folder locally:
 
 ```sh
@@ -36,3 +38,4 @@ If the projector stops working, I can introduce the club without slides, invite 
 - No dependencies or API keys are required.
 - The quiz is a demonstration, not a formal assessment.
 - The sign-up flow needs a real, organizer-approved form before it can collect responses.
+- GitHub Actions deploys the site to GitHub Pages whenever changes are pushed to `main`.
